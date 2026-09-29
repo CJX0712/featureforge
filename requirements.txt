@@ -1,0 +1,11 @@
+# FeatureForge 运行 + 测试关键依赖（pinned）
+# 完整锁定清单见 requirements.lock.txt
+#
+# 说明：optuna 是**可选**后端。缺失时 FEFFuse 自动降级为确定性网格融合，
+# 系统仍可完整运行（零下载 demo 只需 numpy + scikit-learn）。
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+optuna==5.0.0
+pytest==9.1.1
+ruff==0.16.9

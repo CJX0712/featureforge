@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "featureforge"
+version = "0.1.0"
+description = "FeatureForge - automated feature engineering x selector fusion (FEFFuse), CPU-only, offline-capable"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "晨星", email = "CJX0712@users.noreply.github.com" }]
+dependencies = [
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+]
+
+[project.optional-dependencies]
+hpo = ["optuna>=3.0"]
+test = ["pytest>=7.0", "ruff>=0.4"]
+
+[project.scripts]
+featureforge = "featureforge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["featureforge*"]
+
+[tool.pytest.ini_options]
+# 关键：让干净环境（CI）也能 import featureforge —— 历史踩坑：本地 cwd 碰巧可用，
+# CI 里 pytest 不会把 repo root 自动加进 sys.path，导致 ModuleNotFoundError。
+pythonpath = ["."]
+testpaths = ["featureforge/tests"]
+addopts = "-q -W ignore::UserWarning -W ignore::FutureWarning"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [".git", "build", "dist", ".venv", "venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "B008",
+    "E731",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"featureforge/tests/*" = ["B011", "E402"]
+
+[tool.ruff.format]
+quote-style = "double"
